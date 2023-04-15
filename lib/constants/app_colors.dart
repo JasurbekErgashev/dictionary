@@ -9,5 +9,8 @@ class AppColors {
   static const white = Colors.white;
   static const black = Colors.black;
   static final blueGrey10 = blueGrey.withOpacity(0.1);
-  static const Color lightLavender = Color(0xFFF1F2FA);
+  static const lightLavender = Color(0xFFF1F2FA);
+  static const transparent = Colors.transparent;
+  static const Color periwinkle = Color(0xFFBFC1F6);
+  static const Color lightPeriwinkle = Color(0xFFD8D9FA);
 }

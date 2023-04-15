@@ -38,10 +38,8 @@ class SelectTypeButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: TextStyle(
+          style: AppTypography.p.copyWith(
             color: isActice ? AppColors.white : AppColors.blueGrey,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
           ),
         ),
       ),
