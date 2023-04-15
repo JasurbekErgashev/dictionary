@@ -1,8 +1,15 @@
+import 'package:dictionary/app/navigation/app_route.dart';
+import 'package:dictionary/app/ui/screens/result/result_screen.dart';
+import 'package:dictionary/app/ui/widgets/dictionary_litem.dart';
 import 'package:dictionary/app/ui/widgets/scroll_behaviour.dart';
 import 'package:dictionary/app/ui/widgets/text_field_decoration.dart';
 import 'package:dictionary/constants/constants.dart';
+import 'package:dictionary/data/dictionary_db.dart';
+import 'package:dictionary/data/dto/eng_uzb.dart';
+import 'package:dictionary/data/dto/uzb_eng.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -82,41 +89,98 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             controller: _tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              ListView.separated(
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(12),
-                    child: Ink(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(words[index], style: AppTypography.p),
-                    ),
-                  );
+              FutureBuilder<List<EngUzb>>(
+                future: DictionaryDatabase.instance.getAllEngUzbWords(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<EngUzb>> snapshot,
+                ) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () => context.push(
+                              AppRoute.result,
+                              extra: ResultScreenData(
+                                title: snapshot.data![index].eng,
+                                mainContent: snapshot.data![index].uzb,
+                                pron: snapshot.data![index].pron,
+                              ),
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            child: Ink(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(snapshot.data![index].eng,
+                                  style: AppTypography.p),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 8),
+                        itemCount: snapshot.data!.length,
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('No data'),
+                      );
+                    }
+                  } else {
+                    return const Text('Something went so wrong');
+                  }
                 },
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemCount: words.length,
               ),
-              ListView.separated(
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(12),
-                    child: Ink(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(words[index], style: AppTypography.p),
-                    ),
-                  );
+              FutureBuilder<List<UzbEng>>(
+                future: DictionaryDatabase.instance.getAllUzbEngWords(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<UzbEng>> snapshot,
+                ) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () => context.push(
+                              AppRoute.result,
+                              extra: ResultScreenData(
+                                title: snapshot.data![index].uzb,
+                                mainContent: snapshot.data![index].eng,
+                              ),
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            child: Ink(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(snapshot.data![index].uzb,
+                                  style: AppTypography.p),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 8),
+                        itemCount: snapshot.data!.length,
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('No data'),
+                      );
+                    }
+                  } else {
+                    return const Text('Something went so wrong');
+                  }
                 },
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemCount: words.length,
               ),
             ],
           ),
@@ -129,26 +193,3 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 }
-
-const words = [
-  "amplify",
-  "hazardous",
-  "forsake",
-  "gratitude",
-  "dazzling",
-  "luminous",
-  "obscure",
-  "vivid",
-  "crimson",
-  "glimpse",
-  "subtle",
-  "frenzy",
-  "infamous",
-  "pristine",
-  "jovial",
-  "gargantuan",
-  "profound",
-  "whirlwind",
-  "thunderous",
-  "nostalgic"
-];

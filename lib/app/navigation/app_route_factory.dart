@@ -3,6 +3,7 @@ import 'package:dictionary/app/ui/screens/home/home_screen.dart';
 import 'package:dictionary/app/ui/screens/result/result_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen_view_model.dart';
+import 'package:dictionary/data/dto/eng_uzb.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +21,9 @@ final appRouter = GoRouter(
           pageBuilder: (BuildContext context, GoRouterState state) {
             return CustomTransitionPage(
               key: state.pageKey,
-              child: const ResultScreen(),
+              child: ResultScreen(
+                data: state.extra as ResultScreenData,
+              ),
               transitionDuration: const Duration(milliseconds: 300),
               transitionsBuilder: (_, a, sa, child) {
                 const begin = Offset(1.0, 0.0);
