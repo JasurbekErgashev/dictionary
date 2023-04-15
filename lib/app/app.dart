@@ -1,3 +1,5 @@
+import 'package:dictionary/app/navigation/app_route_factory.dart';
+import 'package:dictionary/theme.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -5,12 +7,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Dictionary',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Scaffold(),
+      routerConfig: appRouter,
+      theme: DictionaryTheme.theme(),
     );
   }
 }
