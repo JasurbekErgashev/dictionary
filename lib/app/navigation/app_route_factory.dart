@@ -2,11 +2,12 @@ import 'package:dictionary/app/navigation/app_route.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen.dart';
 import 'package:dictionary/app/ui/screens/result/result_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen.dart';
+import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoute.home,
+  initialLocation: AppRoute.selectDictionary,
   routes: [
     GoRoute(
       path: AppRoute.home,
@@ -59,7 +60,9 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoute.selectDictionary,
       builder: (context, state) {
-        return const SelectDictionaryScreen();
+        return SelectDictionaryScreen(
+          viewModel: SelectDictionaryScreenViewModel(),
+        );
       },
     ),
   ],
