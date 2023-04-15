@@ -1,12 +1,16 @@
 import 'package:dictionary/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class ResultScreenData {
-  ResultScreenData({required this.title, required this.mainContent, this.pron});
+  ResultScreenData({
+    required this.title,
+    required this.mainContent,
+    this.subContent,
+  });
   final String title;
-  final String? pron;
   final String mainContent;
+  final String? subContent;
 }
 
 class ResultScreen extends StatelessWidget {
@@ -35,9 +39,10 @@ class ResultScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // TODO
-            data.pron == null ? const SizedBox() : Text(data.pron!),
-            Html(data: data.mainContent),
+            data.subContent == null
+                ? const SizedBox()
+                : Text(data.subContent!, style: AppTypography.pSBlue),
+            HtmlWidget(data.mainContent, textStyle: AppTypography.h3),
           ],
         ),
       ),
