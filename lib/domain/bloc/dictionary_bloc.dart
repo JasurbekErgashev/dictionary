@@ -1,4 +1,4 @@
-import 'package:dictionary/data/dictionary_db.dart';
+import 'package:dictionary/data/repositories/local_db_repository.dart';
 import 'package:dictionary/domain/bloc/base_bloc.dart';
 import 'package:dictionary/domain/event/dictionary_event.dart';
 import 'package:dictionary/domain/state/dictionary_state.dart';
@@ -15,8 +15,8 @@ class DictionaryBloc extends BaseBloc<DictionaryEvent, DictionaryState> {
   ) async {
     emit(LoadingDictionaryState());
     try {
-      final engUzbWords = await DictionaryDatabase.instance.getAllEngUzbWords();
-      final uzbEngWords = await DictionaryDatabase.instance.getAllUzbEngWords();
+      final engUzbWords = await LocalDBRepository.instance.getAllEngUzbWords();
+      final uzbEngWords = await LocalDBRepository.instance.getAllUzbEngWords();
       emit(
         SuccessDictionaryState(
           engUzbWords: engUzbWords,

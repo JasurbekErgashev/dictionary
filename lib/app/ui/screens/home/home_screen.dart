@@ -1,4 +1,5 @@
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
+import 'package:dictionary/app/ui/screens/home/widgets/custom_drawer.dart';
 import 'package:dictionary/app/ui/widgets/dictionary_list.dart';
 import 'package:dictionary/app/ui/widgets/scroll_behaviour.dart';
 import 'package:dictionary/app/ui/widgets/text_field_decoration.dart';
@@ -92,9 +93,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
           splashRadius: 25,
           icon: SvgPicture.asset(AppAssets.menu),
         ),
@@ -115,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             style: AppTypography.pSmall,
             cursorColor: AppColors.black,
             decoration: appTextFieldDecoration(
-              hintText: 'Search...',
+              hintText: 'qidirish...',
               suffixIcon: !isSearchVisible
                   ? null
                   : IconButton(

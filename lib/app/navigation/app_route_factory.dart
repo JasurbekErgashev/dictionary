@@ -2,6 +2,8 @@ import 'package:dictionary/app/navigation/app_route.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/result/result_screen.dart';
+import 'package:dictionary/app/ui/screens/search_online/search_online_screen_view_model.dart';
+import 'package:dictionary/app/ui/screens/search_online/search_online_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen_view_model.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,27 @@ final appRouter = GoRouter(
         );
       },
       routes: [
+        GoRoute(
+          path: 'search-online',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: SearchOnlineScreen(
+                viewmodel: SearchOnlineScreenViewModel(),
+              ),
+              transitionDuration: const Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, sa, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end);
+                return SlideTransition(
+                  position: tween.animate(a),
+                  child: child,
+                );
+              },
+            );
+          },
+        ),
         GoRoute(
           path: 'result',
           pageBuilder: (BuildContext context, GoRouterState state) {
@@ -39,27 +62,6 @@ final appRouter = GoRouter(
             );
           },
         ),
-        // GoRoute(
-        //   path: 'signup',
-        //   pageBuilder: (BuildContext context, GoRouterState state) {
-        //     return CustomTransitionPage(
-        //       key: state.pageKey,
-        //       child: SignupScreen(
-        //         viewModel: SignupScreenViewModel(),
-        //       ),
-        //       transitionDuration: const Duration(milliseconds: 300),
-        //       transitionsBuilder: (_, a, sa, child) {
-        //         const begin = Offset(1.0, 0.0);
-        //         const end = Offset.zero;
-        //         final tween = Tween(begin: begin, end: end);
-        //         return SlideTransition(
-        //           position: tween.animate(a),
-        //           child: child,
-        //         );
-        //       },
-        //     );
-        //   },
-        // ),
       ],
     ),
     GoRoute(

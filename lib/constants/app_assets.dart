@@ -1,8 +1,9 @@
 class AppAssets {
   const AppAssets._();
-  static const String menu = 'assets/icons/menu.svg';
-  static const String definition = 'assets/icons/definition.svg';
-  static const String close = 'assets/icons/close.svg';
-  static const String mic = 'assets/icons/mic.svg';
-  static const String notFound = 'assets/images/not_found.svg';
+  static const menu = 'assets/icons/menu.svg';
+  static const definition = 'assets/icons/definition.svg';
+  static const close = 'assets/icons/close.svg';
+  static const mic = 'assets/icons/mic.svg';
+  static const notFound = 'assets/images/not_found.svg';
+  static const appLogo = 'assets/images/app_logo.png';
 }

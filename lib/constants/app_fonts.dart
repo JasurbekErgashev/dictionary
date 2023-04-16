@@ -22,6 +22,9 @@ class AppTypography {
     fontSize: 16,
     fontWeight: FontWeight.w500,
   );
+  static final pBlue = p.copyWith(
+    color: AppColors.blue,
+  );
 
   static const pSmall = TextStyle(
     fontSize: 14,
@@ -31,7 +34,14 @@ class AppTypography {
   static final pSmallBlueGrey = pSmall.copyWith(
     color: AppColors.blueGrey,
   );
+  static final pSBGdef = pSmallBlueGrey.copyWith(
+    fontFamily: 'default',
+  );
   static const pSBlue = TextStyle(
     color: AppColors.blue,
+  );
+
+  static final pSItalic = pSmall.copyWith(
+    fontStyle: FontStyle.italic,
   );
 }
