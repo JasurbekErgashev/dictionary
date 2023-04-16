@@ -1,3 +1,4 @@
+import 'package:dictionary/data/dto/definition.dart';
 import 'package:dictionary/data/dto/eng_uzb.dart';
 import 'package:dictionary/data/dto/uzb_eng.dart';
 import 'package:equatable/equatable.dart';
@@ -18,9 +19,11 @@ class SuccessDictionaryState extends DictionaryState {
   SuccessDictionaryState({
     required this.engUzbWords,
     required this.uzbEngWords,
+    required this.defWords,
   });
   final List<EngUzb> engUzbWords;
   final List<UzbEng> uzbEngWords;
+  final List<Definition> defWords;
 
   @override
   List<Object> get props => [...super.props, engUzbWords, uzbEngWords];

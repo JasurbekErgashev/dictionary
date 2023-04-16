@@ -17,10 +17,12 @@ class DictionaryBloc extends BaseBloc<DictionaryEvent, DictionaryState> {
     try {
       final engUzbWords = await DictionaryDatabase.instance.getAllEngUzbWords();
       final uzbEngWords = await DictionaryDatabase.instance.getAllUzbEngWords();
+      final defWords = await DictionaryDatabase.instance.getAllDefWords();
       emit(
         SuccessDictionaryState(
           engUzbWords: engUzbWords,
           uzbEngWords: uzbEngWords,
+          defWords: defWords,
         ),
       );
     } on Object catch (_) {

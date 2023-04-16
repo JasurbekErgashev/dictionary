@@ -1,43 +1,34 @@
-import 'package:dictionary/app/navigation/app_route.dart';
+import 'package:dictionary/app/ui/screens/definition/definitin_list.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
-import 'package:dictionary/app/ui/widgets/dictionary_list.dart';
 import 'package:dictionary/app/ui/widgets/scroll_behaviour.dart';
 import 'package:dictionary/app/ui/widgets/text_field_decoration.dart';
 import 'package:dictionary/constants/constants.dart';
-import 'package:dictionary/data/dto/eng_uzb.dart';
-import 'package:dictionary/data/dto/uzb_eng.dart';
+import 'package:dictionary/data/dto/definition.dart';
 import 'package:dictionary/domain/bloc/dictionary_bloc.dart';
 import 'package:dictionary/domain/state/dictionary_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({required this.viewModel, super.key});
+class DefinitionScreen extends StatefulWidget {
+  const DefinitionScreen({required this.viewModel, super.key});
 
   final HomeScreenViewModel viewModel;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DefinitionScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<DefinitionScreen>
+    with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
 
   final TextEditingController _searchController = TextEditingController();
 
-  late List<EngUzb> engUzbWords;
-  late List<UzbEng> uzbEngWords;
+  late List<Definition> words;
 
-  List<EngUzb> foundEngUzbWords = [];
-  List<UzbEng> foundUzbEngWords = [];
-
-  //stt.SpeachToText _spech;
-  bool isListening = false;
-  double confidence = 1.0;
+  List<Definition> foundWords = [];
 
   @override
   void initState() {
@@ -50,19 +41,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _runFilter(String ek) {
     if (ek.isEmpty) {
       setState(() {
-        foundEngUzbWords = engUzbWords;
-        foundUzbEngWords = uzbEngWords;
+        foundWords = words;
       });
     } else {
       setState(() {
-        foundEngUzbWords = engUzbWords
+        foundWords = words
             .where(
-              (word) => word.eng.toLowerCase().startsWith(ek.toLowerCase()),
-            )
-            .toList();
-        foundUzbEngWords = uzbEngWords
-            .where(
-              (word) => word.uzb.toLowerCase().startsWith(ek.toLowerCase()),
+              (word) => word.word.toLowerCase().startsWith(ek.toLowerCase()),
             )
             .toList();
       });
@@ -76,22 +61,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _searchController.dispose();
   }
 
-  TabBar get _tabBar => TabBar(
-        controller: _tabController,
-        dividerColor: AppColors.transparent,
-        onTap: (_) {
-          _searchController.clear();
-          setState(() {
-            foundEngUzbWords = engUzbWords;
-            foundUzbEngWords = uzbEngWords;
-          });
-        },
-        tabs: const [
-          Tab(text: 'English-Uzbek'),
-          Tab(text: 'O\'zbekcha-Inglizcha'),
-        ],
-      );
-
   bool isSearchVisible = false;
   bool isFirstLaunch = true;
 
@@ -101,9 +70,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
           splashRadius: 25,
-          icon: SvgPicture.asset(AppAssets.menu),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppColors.blueGrey,
+          ),
         ),
         title: SizedBox(
           height: 45,
@@ -139,17 +111,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () => context.push(AppRoute.definition),
-            splashRadius: 25,
-            icon: SvgPicture.asset(AppAssets.definition),
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: _tabBar.preferredSize,
-          child: _tabBar,
-        ),
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
@@ -166,27 +127,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 );
               }
               if (state is SuccessDictionaryState) {
-                engUzbWords = state.engUzbWords;
-                uzbEngWords = state.uzbEngWords;
+                words = state.defWords;
                 if (isFirstLaunch) {
-                  foundEngUzbWords = engUzbWords;
-                  foundUzbEngWords = uzbEngWords;
+                  foundWords = words;
                   isFirstLaunch = false;
                 }
-                return TabBarView(
-                  controller: _tabController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    EngUzbList(
-                      engUzbWords: foundEngUzbWords,
-                      viewModel: widget.viewModel,
-                    ),
-                    UzbEngList(
-                      uzbEngWords: foundUzbEngWords,
-                      viewModel: widget.viewModel,
-                    ),
-                  ],
-                );
+                return DefinitionList(
+                    defWords: foundWords, viewModel: widget.viewModel);
               } else {
                 return const Center(
                   child: Text('Something Went Wrong', style: AppTypography.p),
@@ -198,7 +145,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        
         child: SvgPicture.asset(AppAssets.mic),
       ),
     );
