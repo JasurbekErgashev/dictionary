@@ -70,9 +70,9 @@ class LocalDBRepository {
     }
   }
 
-  Future<List<UzbEng>> getAllUzbEngWords() async {
+  Future<List<UzbEng>> getAllUzbEngWords({int? limit}) async {
     final db = await database;
-    var res = await db.query("uzb_eng");
+    var res = await db.query("uzb_eng", limit: limit);
     List<UzbEng> words =
         res.isNotEmpty ? res.map((w) => UzbEng.fromMap(w)).toList() : [];
     return words;
@@ -101,9 +101,9 @@ class LocalDBRepository {
     }
   }
 
-  Future<List<Definition>> getAllDefinitions() async {
+  Future<List<Definition>> getAllDefinitions({int? limit}) async {
     final db = await database;
-    var res = await db.query("definition");
+    var res = await db.query("definition", limit: limit);
     List<Definition> defs =
         res.isNotEmpty ? res.map((w) => Definition.fromMap(w)).toList() : [];
     return defs;

@@ -1,5 +1,9 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
+import 'package:dictionary/data/dto/definition.dart';
 import 'package:dictionary/data/dto/eng_uzb.dart';
+import 'package:dictionary/data/dto/uzb_eng.dart';
 import 'package:dictionary/data/repositories/local_db_repository.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -12,11 +16,16 @@ class PDFGenerator {
     final List<EngUzb> engUzbWords =
         await LocalDBRepository.instance.getAllEngUzbWords(limit: 10);
 
+    final List<UzbEng> uzbEngWords =
+        await LocalDBRepository.instance.getAllUzbEngWords(limit: 10);
+
+    final List<Definition> engDefs =
+        await LocalDBRepository.instance.getAllDefinitions(limit: 10);
+
     final List<List<String>> data = [
       ['Id', 'Eng', 'Pron', 'Uzb', 'IsFav', 'IsHistory'],
       ...engUzbWords.map(
         (word) => [
-          // word.id.toString(),
           word.eng,
           word.pron,
           word.uzb,
