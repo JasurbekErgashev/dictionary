@@ -1,4 +1,4 @@
-package me.jasur.dictionary.dictionary
+package com.verbum.dictionary
 
 import io.flutter.embedding.android.FlutterActivity
 
