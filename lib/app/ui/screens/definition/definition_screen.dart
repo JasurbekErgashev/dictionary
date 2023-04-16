@@ -1,5 +1,8 @@
+// ignore_for_file: unused_field
+
 import 'package:dictionary/app/ui/screens/definition/definition_screen_view_model.dart';
 import 'package:dictionary/app/ui/widgets/dictionary_list.dart';
+import 'package:dictionary/app/ui/widgets/mic_grower.dart';
 import 'package:dictionary/app/ui/widgets/scroll_behaviour.dart';
 import 'package:dictionary/app/ui/widgets/text_field_decoration.dart';
 import 'package:dictionary/constants/constants.dart';
@@ -9,6 +12,8 @@ import 'package:dictionary/domain/state/definition_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class DefinitionScreen extends StatefulWidget {
   const DefinitionScreen({required this.viewModel, super.key});
@@ -20,6 +25,36 @@ class DefinitionScreen extends StatefulWidget {
 }
 
 class _DefinitionScreenState extends State<DefinitionScreen> {
+  final SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
+  bool isListening = false;
+  String _lastWords = '';
+
+  void _initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+
+    setState(() {});
+  }
+
+  void _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    isListening = true;
+    setState(() {});
+  }
+
+  void _stopListening() async {
+    await _speechToText.stop();
+    isListening = false;
+    setState(() {});
+  }
+
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+      _searchController.text = _lastWords;
+    });
+  }
+
   final TextEditingController _searchController = TextEditingController();
 
   late List<Definition> defs;
@@ -30,6 +65,10 @@ class _DefinitionScreenState extends State<DefinitionScreen> {
   void initState() {
     super.initState();
     widget.viewModel.getDefs(context);
+    _initSpeech();
+    _searchController.addListener(() {
+      _runFilter(_searchController.text);
+    });
   }
 
   void _runFilter(String ek) {
@@ -132,9 +171,9 @@ class _DefinitionScreenState extends State<DefinitionScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: SvgPicture.asset(AppAssets.mic),
+      floatingActionButton: MicGrower(
+        onTap: _speechToText.isNotListening ? _startListening : _stopListening,
+        isNotListening: !isListening,
       ),
     );
   }

@@ -132,14 +132,17 @@ class _AddNewWordScreenState extends State<AddNewWordScreen> {
               builder: (context, state) => UploadButton(
                 isLoading: state is LoadingAddWordState,
                 onTap: () {
-                  widget.viewModel.uploadNewWord(
-                    context,
-                    text1: _text1Controller.text,
-                    text2: _text2Controller.text,
-                    index: typIndex,
-                  );
-                  _text1Controller.clear();
-                  _text2Controller.clear();
+                  if (_text1Controller.text.isNotEmpty &&
+                      _text2Controller.text.isNotEmpty) {
+                    widget.viewModel.uploadNewWord(
+                      context,
+                      text1: _text1Controller.text,
+                      text2: _text2Controller.text,
+                      index: typIndex,
+                    );
+                    _text1Controller.clear();
+                    _text2Controller.clear();
+                  }
                 },
               ),
             ),
