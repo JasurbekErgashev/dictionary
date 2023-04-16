@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:speech_to_text/speech_recognition_result.dart';
+// import 'package:speech_to_text/speech_to_text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({required this.viewModel, super.key});
@@ -25,6 +27,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  // final SpeechToText _speechToText = SpeechToText();
+  // bool _speechEnabled = false;
+  // String _lastWords = '';
+
+  // void _initSpeech() async {
+  //   _speechEnabled = await _speechToText.initialize();
+  //   setState(() {});
+  // }
+
+  // void _startListening() async {
+  //   await _speechToText.listen(onResult: _onSpeechResult);
+  //   setState(() {});
+  // }
+
+  // /// Manually stop the active speech recognition session
+  // /// Note that there are also timeouts that each platform enforces
+  // /// and the SpeechToText plugin supports setting timeouts on the
+  // /// listen method.
+  // void _stopListening() async {
+  //   await _speechToText.stop();
+  //   setState(() {});
+  // }
+
+  // /// This is the callback that the SpeechToText plugin calls when
+  // /// the platform returns recognized words.
+  // void _onSpeechResult(SpeechRecognitionResult result) {
+  //   setState(() {
+  //     _lastWords = result.recognizedWords;
+  //     _searchController.text = _lastWords;
+  //     print(_lastWords);
+  //   });
+  // }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
 
@@ -41,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     widget.viewModel.getWords(context);
+    // _initSpeech();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.animateTo(storage.dictTypeKey!);
   }
@@ -115,8 +151,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 } else {
                   isSearchVisible = true;
                 }
+                _runFilter(value);
               });
-              _runFilter(value);
             },
             controller: _searchController,
             style: AppTypography.pSmall,
@@ -197,7 +233,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => storage.clearStorage(),
+        onPressed: () {
+          // showDialog(
+          //   context: context,
+          //   builder: (context) {
+          //     return StatefulBuilder(
+          //       builder: (BuildContext context, StateSetter setState) {
+          //         return AlertDialog(
+          //           content: Column(
+          //             mainAxisSize: MainAxisSize.min,
+          //             children: [
+          //               GestureDetector(
+          //                 onTap: _speechToText.isNotListening
+          //                     ? _startListening
+          //                     : _stopListening,
+          //                 child: const MicGrower(),
+          //               ),
+          //               Text(
+          //                 _lastWords,
+          //                 style: AppTypography.pSmallBlueGrey,
+          //               ),
+          //             ],
+          //           ),
+          //         );
+          //       },
+          //     );
+          //   },
+          // );
+          // showModalBottomSheet(
+          //   context: context,
+          //   builder: (context) {
+          //     return StatefulBuilder(
+          //       builder: (context, setState) {
+          //         return ScrollConfiguration(
+          //           behavior: CustomScrollBehavior(),
+          //           child: SingleChildScrollView(
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(16),
+          //               child: Column(
+          //                 mainAxisSize: MainAxisSize.min,
+          //                 children: [
+          //                   GestureDetector(
+          //                     onTap: _speechToText.isNotListening
+          //                         ? _startListening
+          //                         : _stopListening,
+          //                     child: const MicGrower(),
+          //                   ),
+          //                   Text(
+          //                     _speechToText.isListening
+          //                         ? _lastWords
+          //                         : _speechEnabled
+          //                             ? 'Tap the microphone to start listening...'
+          //                             : 'Speech not available',
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     );
+          //   },
+          // );
+        },
         child: SvgPicture.asset(AppAssets.mic),
       ),
     );

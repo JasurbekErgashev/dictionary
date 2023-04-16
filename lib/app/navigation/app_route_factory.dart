@@ -1,8 +1,11 @@
 import 'package:dictionary/app/navigation/app_route.dart';
+import 'package:dictionary/app/ui/screens/add_new_word/add_new_word_screen.dart';
+import 'package:dictionary/app/ui/screens/add_new_word/add_new_word_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/definition/definition_screen.dart';
 import 'package:dictionary/app/ui/screens/definition/definition_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
+import 'package:dictionary/app/ui/screens/pdf_download/pdf_download_screen.dart';
 import 'package:dictionary/app/ui/screens/result/result_screen.dart';
 import 'package:dictionary/app/ui/screens/search_online/search_online_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/search_online/search_online_screen.dart';
@@ -33,6 +36,46 @@ final appRouter = GoRouter(
               child: SearchOnlineScreen(
                 viewmodel: SearchOnlineScreenViewModel(),
               ),
+              transitionDuration: const Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, sa, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end);
+                return SlideTransition(
+                  position: tween.animate(a),
+                  child: child,
+                );
+              },
+            );
+          },
+        ),
+        GoRoute(
+          path: 'add-new-word',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: AddNewWordScreen(
+                viewModel: AddNewWordScreenViewModel(),
+              ),
+              transitionDuration: const Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, sa, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end);
+                return SlideTransition(
+                  position: tween.animate(a),
+                  child: child,
+                );
+              },
+            );
+          },
+        ),
+        GoRoute(
+          path: 'pdf-download',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const PdfDownloadScreen(),
               transitionDuration: const Duration(milliseconds: 300),
               transitionsBuilder: (_, a, sa, child) {
                 const begin = Offset(1.0, 0.0);

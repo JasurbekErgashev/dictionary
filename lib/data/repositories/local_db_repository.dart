@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dictionary/data/dto/definition.dart';
 import 'package:dictionary/data/dto/eng_uzb.dart';
 import 'package:dictionary/data/dto/uzb_eng.dart';
+import 'package:dictionary/shared/logger.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,12 +40,34 @@ class LocalDBRepository {
     db.close();
   }
 
-  Future<List<EngUzb>> getAllEngUzbWords() async {
+  Future<List<EngUzb>> getAllEngUzbWords({int? limit}) async {
     final db = await database;
-    var res = await db.query("eng_uzb");
+    var res = await db.query("eng_uzb", limit: limit);
     List<EngUzb> words =
         res.isNotEmpty ? res.map((w) => EngUzb.fromMap(w)).toList() : [];
     return words;
+  }
+
+  Future<void> addItemToEngUzb({required EngUzb item}) async {
+    final db = await database;
+    final List<Map<String, dynamic>> existingItems = await db.query(
+      'eng_uzb',
+      where: 'eng = ?',
+      whereArgs: [item.eng],
+    );
+    if (existingItems.isNotEmpty) {
+      throw Exception('Item already exists');
+    }
+    try {
+      final rawId = await db.insert(
+        'eng_uzb',
+        item.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.abort,
+      );
+      logger.i(rawId);
+    } catch (e) {
+      logger.e('Insertion failed: $e');
+    }
   }
 
   Future<List<UzbEng>> getAllUzbEngWords() async {
@@ -55,11 +78,57 @@ class LocalDBRepository {
     return words;
   }
 
+  Future<void> addItemToUzbEng({required UzbEng item}) async {
+    final db = await database;
+    final List<Map<String, dynamic>> existingItems = await db.query(
+      'uzb_eng',
+      where: 'uzb = ?',
+      whereArgs: [item.uzb],
+    );
+    if (existingItems.isNotEmpty) {
+      throw Exception('Item already exists');
+    }
+
+    try {
+      final rawId = await db.insert(
+        'uzb_eng',
+        item.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.abort,
+      );
+      logger.i(rawId);
+    } catch (e) {
+      logger.e('Insertion failed: $e');
+    }
+  }
+
   Future<List<Definition>> getAllDefinitions() async {
     final db = await database;
     var res = await db.query("definition");
     List<Definition> defs =
         res.isNotEmpty ? res.map((w) => Definition.fromMap(w)).toList() : [];
     return defs;
+  }
+
+  Future<void> addItemToDef({required Definition item}) async {
+    final db = await database;
+    final List<Map<String, dynamic>> existingItems = await db.query(
+      'definition',
+      where: 'Word = ?',
+      whereArgs: [item.word],
+    );
+    if (existingItems.isNotEmpty) {
+      throw Exception('Item already exists');
+    }
+
+    try {
+      final rawId = await db.insert(
+        'definition',
+        item.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.abort,
+      );
+      logger.i(rawId);
+    } catch (e) {
+      logger.e('Insertion failed: $e');
+    }
   }
 }

@@ -64,14 +64,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                context.push(AppRoute.addNewWord);
+                Navigator.pop(context);
+              },
               leading: const Icon(Icons.add_circle_rounded),
-              title: const Text('Qo\'shish'),
+              title: const Text('So\'z qo\'shish'),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                context.push(AppRoute.pdfDownload);
+                Navigator.pop(context);
+              },
               leading: const Icon(Icons.picture_as_pdf),
-              title: const Text('PDF'),
+              title: const Text('PDF shaklda yuklash'),
             ),
           ],
         ),

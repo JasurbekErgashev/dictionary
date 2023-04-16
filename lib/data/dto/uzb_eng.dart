@@ -5,7 +5,6 @@ UzbEng fromJson(String str) => UzbEng.fromMap(json.decode(str));
 String toJson(UzbEng data) => json.encode(data.toMap());
 
 class UzbEng {
-  int id;
   String uzb;
   String eng;
   String? eng1;
@@ -14,7 +13,6 @@ class UzbEng {
   int isHistory;
 
   UzbEng({
-    required this.id,
     required this.uzb,
     required this.eng,
     required this.eng1,
@@ -24,7 +22,6 @@ class UzbEng {
   });
 
   factory UzbEng.fromMap(Map<String, dynamic> json) => UzbEng(
-        id: json["_id"],
         uzb: json["uzb"],
         eng: json["eng"],
         eng1: json["eng_1"],
@@ -34,7 +31,6 @@ class UzbEng {
       );
 
   Map<String, dynamic> toMap() => {
-        "_id": id,
         "uzb": uzb,
         "eng": eng,
         "eng_1": eng1,

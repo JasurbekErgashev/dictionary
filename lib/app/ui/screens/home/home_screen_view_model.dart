@@ -1,3 +1,5 @@
+import 'package:dictionary/app/ui/widgets/mic_grower.dart';
+import 'package:dictionary/app/ui/widgets/scroll_behaviour.dart';
 import 'package:dictionary/constants/constants.dart';
 import 'package:dictionary/domain/bloc/dictionary_bloc.dart';
 import 'package:dictionary/domain/event/dictionary_event.dart';
@@ -19,6 +21,29 @@ class HomeScreenViewModel {
         return AlertDialog(
           title: Text(title, style: AppTypography.h3Bold),
           content: HtmlWidget(content, textStyle: AppTypography.pSmallBlueGrey),
+        );
+      },
+    );
+  }
+
+  void showVoiceModalSheet(BuildContext context, String text) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ScrollConfiguration(
+          behavior: CustomScrollBehavior(),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const MicGrower(),
+                  Text(text),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );

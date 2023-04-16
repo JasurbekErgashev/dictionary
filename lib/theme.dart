@@ -10,21 +10,14 @@ class DictionaryTheme {
         backgroundColor: AppColors.lightLavender,
         foregroundColor: AppColors.blueGrey,
       ),
-      // primaryColor: AppColors.darkBluePurple,
-      // colorScheme: ColorScheme.fromSwatch(
-      //     // primarySwatch: Colors.grey,
-      //     // accentColor: AppColors.darkBluePurple,
-      //     ),
       fontFamily: 'Montserrat',
-      // splashColor: AppColors.darkBluePurple10,
-      // bottomSheetTheme: const BottomSheetThemeData(
-      //   // backgroundColor: AppColors.white,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.vertical(
-      //       top: Radius.circular(12),
-      //     ),
-      //   ),
-      // ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(12),
+          ),
+        ),
+      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.lightLavender,
       ),

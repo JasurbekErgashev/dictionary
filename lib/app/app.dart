@@ -1,6 +1,7 @@
 import 'package:dictionary/app/navigation/app_route_factory.dart';
 import 'package:dictionary/domain/bloc/definition_bloc.dart';
 import 'package:dictionary/domain/bloc/dictionary_bloc.dart';
+import 'package:dictionary/domain/bloc/newword_bloc.dart';
 import 'package:dictionary/domain/bloc/online_dictionary_bloc.dart';
 import 'package:dictionary/theme.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<DefinitionBloc>(
           create: (_) => DefinitionBloc(),
+        ),
+        BlocProvider<AddNewWordBloc>(
+          create: (_) => AddNewWordBloc(),
         ),
       ],
       child: MaterialApp.router(

@@ -14,4 +14,5 @@ class AppColors {
   static const periwinkle = Color(0xFFBFC1F6);
   static const lightPeriwinkle = Color(0xFFD8D9FA);
   static const blue = Colors.blue;
+  static final grey100 = Colors.grey.shade100;
 }
