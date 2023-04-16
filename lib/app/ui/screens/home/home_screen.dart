@@ -7,6 +7,7 @@ import 'package:dictionary/app/ui/widgets/text_field_decoration.dart';
 import 'package:dictionary/constants/constants.dart';
 import 'package:dictionary/data/dto/eng_uzb.dart';
 import 'package:dictionary/data/dto/uzb_eng.dart';
+import 'package:dictionary/data/storage/dictionary_type_storage.dart';
 import 'package:dictionary/domain/bloc/dictionary_bloc.dart';
 import 'package:dictionary/domain/state/dictionary_state.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late TabController _tabController;
 
   final TextEditingController _searchController = TextEditingController();
+  final DictionaryTypeStorage storage = DictionaryTypeStorage();
 
   late List<EngUzb> engUzbWords;
   late List<UzbEng> uzbEngWords;
@@ -40,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     widget.viewModel.getWords(context);
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.animateTo(0);
+    _tabController.animateTo(storage.dictTypeKey!);
   }
 
   void _runFilter(String ek) {
@@ -75,12 +77,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabBar get _tabBar => TabBar(
         controller: _tabController,
         dividerColor: AppColors.transparent,
-        onTap: (_) {
+        onTap: (value) {
           _searchController.clear();
           setState(() {
             foundEngUzbWords = engUzbWords;
             foundUzbEngWords = uzbEngWords;
           });
+          storage.saveDictTypeKey(value);
         },
         tabs: const [
           Tab(text: 'English-Uzbek'),
@@ -95,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(storage: storage, tabController: _tabController),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
@@ -194,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => storage.clearStorage(),
         child: SvgPicture.asset(AppAssets.mic),
       ),
     );

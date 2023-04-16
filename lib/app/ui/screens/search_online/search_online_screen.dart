@@ -60,7 +60,7 @@ class _SearchOnlineScreenState extends State<SearchOnlineScreen> {
             color: AppColors.blueGrey,
           ),
         ),
-        title: const Text('Search Online'),
+        title: const Text('Onlayn Qidirish'),
       ),
       body: ScrollConfiguration(
         behavior: CustomScrollBehavior(),

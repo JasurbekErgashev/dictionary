@@ -8,11 +8,14 @@ import 'package:dictionary/app/ui/screens/search_online/search_online_screen_vie
 import 'package:dictionary/app/ui/screens/search_online/search_online_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen_view_model.dart';
+import 'package:dictionary/data/storage/dictionary_type_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoute.home,
+  initialLocation: DictionaryTypeStorage().dictTypeKey == null
+      ? AppRoute.selectDictionary
+      : AppRoute.home,
   routes: [
     GoRoute(
       path: AppRoute.home,

@@ -1,9 +1,9 @@
-import 'package:dictionary/app/navigation/app_route.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/select_dictionary_screen_view_model.dart';
+import 'package:dictionary/app/ui/screens/select_dictionary/widgets/navigate_home_button.dart';
 import 'package:dictionary/app/ui/screens/select_dictionary/widgets/select_type_button.dart';
 import 'package:dictionary/constants/constants.dart';
+import 'package:dictionary/data/storage/dictionary_type_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SelectDictionaryScreen extends StatefulWidget {
   const SelectDictionaryScreen({required this.viewModel, super.key});
@@ -15,6 +15,7 @@ class SelectDictionaryScreen extends StatefulWidget {
 }
 
 class _SelectDictionaryScreenState extends State<SelectDictionaryScreen> {
+  DictionaryTypeStorage storage = DictionaryTypeStorage();
   bool englishUzbek = false;
   bool uzbekEnglish = false;
   @override
@@ -32,11 +33,11 @@ class _SelectDictionaryScreenState extends State<SelectDictionaryScreen> {
               const SizedBox(height: 32),
               SelectTypeButton(
                 onPressed: () {
+                  storage.saveDictTypeKey(0);
                   setState(() {
                     englishUzbek = true;
                     uzbekEnglish = false;
                   });
-                  context.go(AppRoute.home);
                 },
                 title: 'English-Uzbek',
                 buttonWidth: widget.viewModel.buttonWidth(context),
@@ -45,15 +46,23 @@ class _SelectDictionaryScreenState extends State<SelectDictionaryScreen> {
               const SizedBox(height: 16),
               SelectTypeButton(
                 onPressed: () {
+                  storage.saveDictTypeKey(1);
                   setState(() {
-                    englishUzbek = false;
                     uzbekEnglish = true;
+                    englishUzbek = false;
                   });
-                  context.go(AppRoute.home);
                 },
                 title: 'O\'zbekcha-Inglizcha',
                 buttonWidth: widget.viewModel.buttonWidth(context),
                 isActice: uzbekEnglish,
+              ),
+              const SizedBox(height: 16),
+              Visibility(
+                visible: storage.dictTypeKey != null,
+                replacement: const SizedBox(height: 60),
+                child: NavigateHomeButton(
+                  width: widget.viewModel.buttonWidth(context) / 2,
+                ),
               ),
             ],
           ),
