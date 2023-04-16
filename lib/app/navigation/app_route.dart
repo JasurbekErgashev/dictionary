@@ -5,4 +5,5 @@ class AppRoute {
   static const home = '/home';
   static const result = '/home/result';
   static const searchOnline = '/home/search-online';
+  static const definition = '/home/definition';
 }

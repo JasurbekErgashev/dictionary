@@ -1,7 +1,9 @@
 import 'package:dictionary/app/navigation/app_route.dart';
+import 'package:dictionary/app/ui/screens/definition/definition_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/result/result_screen.dart';
 import 'package:dictionary/constants/constants.dart';
+import 'package:dictionary/data/dto/definition.dart';
 import 'package:dictionary/data/dto/eng_uzb.dart';
 import 'package:dictionary/data/dto/uzb_eng.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +94,54 @@ class UzbEngList extends StatelessWidget {
               return const SizedBox(height: 8);
             },
             itemCount: uzbEngWords.length,
+          )
+        : Center(
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: SvgPicture.asset(AppAssets.notFound),
+            ),
+          );
+  }
+}
+
+class DefList extends StatelessWidget {
+  const DefList({
+    required this.defs,
+    required this.viewModel,
+    super.key,
+  });
+
+  final List<Definition> defs;
+  final DefinitionScreenViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return defs.isNotEmpty
+        ? ListView.separated(
+            itemBuilder: (context, index) {
+              return InkWell(
+                onLongPress: () => viewModel.showWordDefDialog(
+                  context,
+                  defs[index].word,
+                  defs[index].description,
+                ),
+                onTap: () => context.push(
+                  AppRoute.result,
+                  extra: ResultScreenData(
+                    title: defs[index].word,
+                    mainContent: defs[index].description,
+                    subContent: defs[index].type,
+                  ),
+                ),
+                borderRadius: BorderRadius.circular(12),
+                child: ListItem(title: defs[index].word),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 8);
+            },
+            itemCount: defs.length,
           )
         : Center(
             child: SizedBox(

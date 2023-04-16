@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dictionary/data/dto/definition.dart';
 import 'package:dictionary/data/dto/eng_uzb.dart';
 import 'package:dictionary/data/dto/uzb_eng.dart';
 import 'package:flutter/services.dart';
@@ -52,5 +53,13 @@ class LocalDBRepository {
     List<UzbEng> words =
         res.isNotEmpty ? res.map((w) => UzbEng.fromMap(w)).toList() : [];
     return words;
+  }
+
+  Future<List<Definition>> getAllDefinitions() async {
+    final db = await database;
+    var res = await db.query("definition");
+    List<Definition> defs =
+        res.isNotEmpty ? res.map((w) => Definition.fromMap(w)).toList() : [];
+    return defs;
   }
 }

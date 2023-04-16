@@ -1,4 +1,6 @@
 import 'package:dictionary/app/navigation/app_route.dart';
+import 'package:dictionary/app/ui/screens/definition/definition_screen.dart';
+import 'package:dictionary/app/ui/screens/definition/definition_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/result/result_screen.dart';
@@ -48,6 +50,27 @@ final appRouter = GoRouter(
               key: state.pageKey,
               child: ResultScreen(
                 data: state.extra as ResultScreenData,
+              ),
+              transitionDuration: const Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, sa, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end);
+                return SlideTransition(
+                  position: tween.animate(a),
+                  child: child,
+                );
+              },
+            );
+          },
+        ),
+        GoRoute(
+          path: 'definition',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: DefinitionScreen(
+                viewModel: DefinitionScreenViewModel(),
               ),
               transitionDuration: const Duration(milliseconds: 300),
               transitionsBuilder: (_, a, sa, child) {

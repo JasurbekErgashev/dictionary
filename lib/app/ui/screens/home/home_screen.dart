@@ -1,3 +1,4 @@
+import 'package:dictionary/app/navigation/app_route.dart';
 import 'package:dictionary/app/ui/screens/home/home_screen_view_model.dart';
 import 'package:dictionary/app/ui/screens/home/widgets/custom_drawer.dart';
 import 'package:dictionary/app/ui/widgets/dictionary_list.dart';
@@ -11,6 +12,7 @@ import 'package:dictionary/domain/state/dictionary_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({required this.viewModel, super.key});
@@ -136,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => context.push(AppRoute.definition),
             splashRadius: 25,
             icon: SvgPicture.asset(AppAssets.definition),
           ),
