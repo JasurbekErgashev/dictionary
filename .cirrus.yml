@@ -1,5 +1,14 @@
 container:
   image: cirrusci/flutter:stable
-test_task:
-  pub_cache:
-    folder: ~/.pub-cache
+stages:
+  - build
+
+doctor:
+  stage: build
+  script:
+    - flutter doctor
+
+build:
+  stage: build
+  script:
+    - flutter build appbundle
